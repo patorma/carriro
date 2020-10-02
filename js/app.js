@@ -4,7 +4,7 @@ const carrito = document.querySelector("#carrito");
 const contenedorCarrito = document.querySelector("#lista-carrito tbody");
 const vaciarCarritoBtn = document.querySelector("#vaciar-carrito");
 const listaCursos = document.querySelector("#lista-cursos");
-let articulosCarrito = []
+let articulosCarrito = [];
 
 cargarEventListeners();
 //funcion para cargar addEventlistener
@@ -18,7 +18,7 @@ function cargarEventListeners() {
 function agregarCurso(e) {
     e.preventDefault();
 
-    //2° Nos aseguramos que el usuario haya hecho click en agregar carrito 
+    //2° Nos aseguramos que el usuario haya hecho click en agregar carrito
     if (e.target.classList.contains("agregar-carrito")) {
         // 3°  Y accedemos a todo el div que tiene el contenedor del curso
         //Situarse en el padre del elemento e.target.parentElement.parentElement)
@@ -28,7 +28,7 @@ function agregarCurso(e) {
     }
 }
 
-// 4° leemos datos del curso 
+// 4° leemos datos del curso
 //Lee el contenido del HTML al que le dimos click y extrae la informacion del curso
 function leerDatosCurso(curso) {
     // console.log(curso);
@@ -39,7 +39,7 @@ function leerDatosCurso(curso) {
         titulo: curso.querySelector("h4").textContent,
         precio: curso.querySelector(".precio span").textContent,
         id: curso.querySelector("a").getAttribute("data-id"),
-        cantidad: 1
+        cantidad: 1,
     };
     // 5° agregamos el curso al carrito
     // Agrega elementos al arreglo de carrito
@@ -48,31 +48,43 @@ function leerDatosCurso(curso) {
     //no queremos perder la referencia de los cursos agregados
     //por eso se hace una copia del array
     //equivalente hacer un push
-    articulosCarrito = [...articulosCarrito, infoCurso]
-    console.log(articulosCarrito)
-        //6 °imprimimos ese HTML
-    carritoHTML()
-
+    articulosCarrito = [...articulosCarrito, infoCurso];
+    console.log(articulosCarrito);
+    //6 °imprimimos ese HTML
+    carritoHTML();
 }
 
 // Muestra el Carrito de compras en el HTML
 // se encarga de generar el HTML basado en el carrito de compras
 function carritoHTML() {
-
-    // Limpiar el HTML 
-    limpiarHTML()
+    // Limpiar el HTML
+    limpiarHTML();
 
     // Recoore el carrito y genera el HTML
-    articulosCarrito.forEach(curso => {
-        const row = document.createElement('tr')
+    articulosCarrito.forEach((curso) => {
+        const { imagen, titulo, precio, cantidad, id } = curso
+        const row = document.createElement("tr");
         row.innerHTML = `
           <td>
-              ${curso.titulo}     
+                <img src="${imagen}" width="100">
           </td>
-        `
-            // Agrega el HTML del carrito en el body
-        contenedorCarrito.appendChild(row)
-    })
+          <td>
+              ${titulo}     
+          </td>
+          <td>
+              ${precio}     
+          </td>
+          <td>
+          ${cantidad}     
+          </td>
+
+          <td>
+            <a href="#" class="borrar-curso" data-id="${id}">X</a>
+          </td>
+        `;
+        // Agrega el HTML del carrito en el body
+        contenedorCarrito.appendChild(row);
+    });
 }
 
 // Elimina los cursos del tbody
@@ -82,6 +94,6 @@ function limpiarHTML() {
 
     // si ese contenedor carrito tiene aunque sea un elemento dentro (hijo)
     while (contenedorCarrito.firstChild) {
-        contenedorCarrito.removeChild(contenedorCarrito.firstChild)
+        contenedorCarrito.removeChild(contenedorCarrito.firstChild);
     }
 }
