@@ -41,14 +41,35 @@ function leerDatosCurso(curso) {
         id: curso.querySelector("a").getAttribute("data-id"),
         cantidad: 1,
     };
-    // 5° agregamos el curso al carrito
-    // Agrega elementos al arreglo de carrito
-    // se toma una copia del carrito de compra(articulosCarrito)
-    //y se agrega la informacion a este array
-    //no queremos perder la referencia de los cursos agregados
-    //por eso se hace una copia del array
-    //equivalente hacer un push
-    articulosCarrito = [...articulosCarrito, infoCurso];
+
+    // Revisa si un elemento ya existe en el carrito 
+    // con .some() se verifica si cada elemento cumple con la condicion
+    const existe = articulosCarrito.some(curso => curso.id === infoCurso.id)
+    if (existe) {
+        // Actualizamos la cantidad
+        const cursos = articulosCarrito.map(curso => {
+            // se busca si hay un curso duplicado
+            if (curso.id === infoCurso.id) {
+                curso.cantidad++
+                    return curso // retorna el objeto actualizado
+            } else {
+                return curso // retorma los objetos que no son duplicados
+            }
+        })
+        articulosCarrito = [...cursos]
+
+    } else {
+        //Agreagamos el curso al carrito
+        // 5° agregamos el curso al carrito
+        // Agrega elementos al arreglo de carrito
+        // se toma una copia del carrito de compra(articulosCarrito)
+        //y se agrega la informacion a este array
+        //no queremos perder la referencia de los cursos agregados
+        //por eso se hace una copia del array
+        //equivalente hacer un push
+        articulosCarrito = [...articulosCarrito, infoCurso];
+    }
+
     console.log(articulosCarrito);
     //6 °imprimimos ese HTML
     carritoHTML();
